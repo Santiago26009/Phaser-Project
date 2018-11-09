@@ -1,5 +1,6 @@
 var juego = new Phaser.Game(920, 530, Phaser.CANVAS, 'game');
 var tiempo= juego.Timer;
+var cont=0;
 var estadoInicial = {
 
 	preload: function () {
@@ -39,6 +40,7 @@ var estadoDos = {
     juego.load.image('blanks', 'imagenes/Blank.png');
     juego.load.image('salida', 'imagenes/Salida.png');
     juego.load.image('llegada', 'imagenes/Llegada.png');
+    juego.load.image('tubo', 'imagenes/Tubos/Recto4.png');
 	},
 
 	create: function () {
@@ -49,21 +51,67 @@ var estadoDos = {
 	blank = juego.add.tileSprite(732, 455, 175, 45, 'blanks');
 	salida = juego.add.tileSprite(270, 10, 100, 107, 'salida');
 	llegada = juego.add.tileSprite(606, 420, 100, 107, 'llegada');
- 	
-	},
+ 	tubo = juego.add.tileSprite(725, 250, 90, 193, 'tubo');
+	TEnable();
+    
+    },
 
 	reiniciarJuego: function () {	
         juego.state.add('inicial', estadoInicial);
         juego.state.start('inicial');
             
         
+	},
+    
+    update: function(){
 	// centro de poder del juego
-            console.log(tiempo);
-            console.log("HOLA");
         
-	}
+    // tuboArrastrado(); ----> Toca buscar metodo que ayude a revisar qué tubo es el que se está arrastrando(variable);
+        VerificarUnion(tubo, salida);
+        
+   
+        
+        
+    }
 
 };
+    
+    function VerificarUnion(tuboArrastrado,tubo2){
+        
+    ///// FALTA MODIFICACIÓN: CODIGO DE PRUEBA Y GUIA; VERIFICAR SI HAY CERCANIA CON ALGUNO DE LOS TUBOS QUE SE ENCUENTRA EN USO
+        if (cont==0){
+            tubo2=salida;
+            if ((tuboArrastrado.x>=(tubo2.x) && (tuboArrastrado.x+90 <=(tubo2.x+100))) && ((tuboArrastrado.y>=(tubo2.y+80)) && (tuboArrastrado.y <= tubo2.y+117))){
+                tuboArrastrado.x=tubo2.x;
+                tuboArrastrado.y=tubo2.y+107;
+                TNoEnable();
+                }       
+            
+            }
+            else {
+                
+                
+                
+            }
+    }
+
+
+    function TNoEnable(){
+         ///// DESHABILITAR EL ENABLE DE TODOS LOS TUBOS CUANDO PASE EL TIEMPO 
+        
+         tubo.inputEnabled=false;
+         tubo.input.enableDrag(false);
+        
+    }
+  function TEnable(){
+        ///// HABILITAR EL ENABLE DE TODOS LOS TUBOS AL CREARLOS
+
+        tubo.inputEnabled=true;
+        tubo.input.enableDrag(true);
+    
+   }
+
+
 
 juego.state.add('inicial', estadoInicial);
 juego.state.start('inicial');
