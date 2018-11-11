@@ -37,9 +37,12 @@ var estadoDos = {
     juego.load.image('blanks', 'imagenes/Blank.png');
     juego.load.image('salida', 'imagenes/Salida.png');
     juego.load.image('llegada', 'imagenes/Llegada.png');
-    juego.load.image('tubo', 'imagenes/tubo1.png');
-	juego.load.image('codo', 'imagenes/codomejor.png');
-   
+    juego.load.image('tubo1', 'imagenes/tubo1.png');
+    juego.load.image('tubo2', 'imagenes/tubo2.png');
+	juego.load.image('codo1', 'imagenes/codo1.png');
+    juego.load.image('codo2', 'imagenes/codo2.png');
+    juego.load.image('codo3', 'imagenes/codo3.png');
+    juego.load.image('codo4', 'imagenes/codo4.png');
 
     },
 
@@ -52,10 +55,14 @@ var estadoDos = {
 	blank = juego.add.tileSprite(732, 455, 175, 45, 'blanks');
 	salida = juego.add.tileSprite(270, 10, 100, 107, 'salida');
 	llegada = juego.add.tileSprite(606, 420, 100, 107, 'llegada');
- 	tubo = juego.add.tileSprite(725, 250, 22, 76, 'tubo');
-    codo = juego.add.tileSprite(750, 250, 34, 38, 'codo');
+ 	tubo1 = juego.add.tileSprite(750, 135, 22, 76, 'tubo1');
+    tubo2 = juego.add.tileSprite(805, 135, 76, 22, 'tubo2');
+    codo1 = juego.add.tileSprite(750, 250, 34, 38, 'codo1');
+    codo2 = juego.add.tileSprite(795, 180, 38, 34, 'codo2');
+    codo3 = juego.add.tileSprite(865, 180, 34, 38, 'codo3');
+    codo4 = juego.add.tileSprite(820, 250, 38, 34, 'codo4');
 	TEnable();
-    timer = juego.add.text(105, 50, juego.time.now);
+    timer = juego.add.text(105, 45, juego.time.now);
     },
 
 	reiniciarJuego: function () {
@@ -68,17 +75,14 @@ var estadoDos = {
         juego.state.start('estadoTres');
     },
 
-
-    
     update: function(){
 	// centro de poder del juego
        //console.log (tuboArrastrado()); 
-        VerificarUnion(tubo, salida);
+        VerificarUnion(tubo1, salida);
         console.log(time);
         if ((juego.time.now-time+1)<30007){
             timer.text = (juego.time.now-time)/1000; 
         }
-
     
     },
 
@@ -137,10 +141,18 @@ var estadoDos = {
     }
   function TEnable(){
         ///// HABILITAR EL ENABLE DE TODOS LOS TUBOS AL CREARLOS
-        codo.inputEnabled=true;
-        tubo.inputEnabled=true;
-        tubo.input.enableDrag(true);
-        codo.input.enableDrag(true);
+        tubo1.inputEnabled=true;
+        tubo1.input.enableDrag(true);
+        tubo2.inputEnabled=true;
+        tubo2.input.enableDrag(true);
+        codo1.inputEnabled=true;
+        codo1.input.enableDrag(true);
+        codo2.inputEnabled=true;
+        codo2.input.enableDrag(true);
+        codo3.inputEnabled=true;
+        codo3.input.enableDrag(true);
+        codo4.inputEnabled=true;
+        codo4.input.enableDrag(true);
     
    }
 
