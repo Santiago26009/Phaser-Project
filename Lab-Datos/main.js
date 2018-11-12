@@ -1,5 +1,4 @@
 var juego = new Phaser.Game(920, 530, Phaser.CANVAS, 'game');
-var cont=0;
 var time;
 var estadoInicial = {
 
@@ -63,6 +62,7 @@ var estadoDos = {
     llegada = juego.add.tileSprite(x2, 431, 106, 98, 'llegada');
     tubos = [tubo1, tubo2, codo1, codo2, codo3, codo4];
     tubosIn=[];
+    cont=0;
     this.TEnable();
     sw=true;
     timer = juego.add.text(105, 45, juego.time.now);
@@ -80,7 +80,8 @@ var estadoDos = {
 
  tuboArrastrado: function(){
     for (var i=0; i<tubos.length; i++){
-        if ((juego.input.mousePointer.x>=tubos[i]) && (juego.input.mousePointer.x<=tubos[i]+tubos[i].width) && (juego.input.mousePointer.y>=tubos[i]) && (juego.input.mousePointer.y<=tubos[i]+tubos[i].height)) 
+        
+        if ((juego.input.mousePointer.x>=tubos[i].x) && (juego.input.mousePointer.x<=tubos[i].x+tubos[i].width) && (juego.input.mousePointer.y>=tubos[i].y) && (juego.input.mousePointer.y<=tubos[i].y+tubos[i].height)) 
         {
             return tubos[i];
         }
@@ -136,40 +137,64 @@ var estadoDos = {
         var tuboAgarre;
         if (cont==0){
           tuboAgarre=salida;
-            if ((tuboArrastrado.x>((tuboAgarre.x)+(width/3))) && ((tuboArrastrado.x+tuboArrastrado.width) < (tuboAgarre.x+tuboAgarre.width-(tuboAgarre.width/5))) && ((tuboArrastrado.y>=(tuboAgarre.y+tuboAgarre.height-5)) && (tuboArrastrado.y <= tuboArrastrado.y+tuboAgarre.height+10)))
+            if ((tuboArrastrado.x>((tuboAgarre.x)+(tuboAgarre.width)-5)) && ((tuboArrastrado.x+tuboArrastrado.width) <= ((tuboAgarre.x+tuboAgarre.width)+(tuboArrastrado.width+12))) && ((tuboArrastrado.y>=(tuboAgarre.y+tuboAgarre.height*2/5 +5)) && (tuboArrastrado.y <= (tuboAgarre.y+tuboAgarre.height+5))))
                 {
-                tuboArrastrado.x=tuboAgarre.x;
-                tuboArrastrado.y=tuboAgarre.y+tuboAgarre.height;
+                tuboArrastrado.x=tuboAgarre.x+tuboAgarre.width - 5;
+                tuboArrastrado.y=tuboAgarre.y+tuboAgarre.height*3/5 - 7;
                 tuboArrastrado.inputEnabled=false;
                 tuboArrastrado.input.enableDrag(false);
                 tubosIn.push(tuboArrastrado);
+                console.log(tubosIn);
                 cont++;
-                }     
-                else {
-                tuboAgarre=tubosIn[tubosIn.lenght-1];
-                    if ((tuboArrastrado.x>=(tuboAgarre.x) && ((tuboArrastrado.x+tuboArrastrado.width) <= (tuboAgarre.x+tuboAgarre.width))) && ((tuboArrastrado.y>=(tuboAgarre.y+tuboAgarre.height)) && (tuboArrastrado.y <= tuboAgarre.y+tuboAgarre.height)))
+            } 
+        }    
+            else {
+                tuboAgarre=tubosIn[tubosIn.length-1];
+                    if ((tuboArrastrado.x+4 >= (tuboAgarre.x)) && ((tuboArrastrado.x + tuboArrastrado.width-5) <= (tuboAgarre.x+tuboAgarre.width)) && (tuboArrastrado.y>=(tuboAgarre.y+tuboAgarre.height-3)) && (tuboArrastrado.y <= (tuboAgarre.y+tuboAgarre.height+tuboArrastrado.width + 3)))
                         {
-                        tuboArrastrado.x=tuboAgarre.x;
+                        tuboArrastrado.x=tuboAgarre.x + 1.5;
                         tuboArrastrado.y=tuboAgarre.y+tuboAgarre.height;
                         tuboArrastrado.inputEnabled=false;
                         tuboArrastrado.input.enableDrag(false);
                         tubosIn.push(tuboArrastrado);
-                    }   
-                }
-            
-                
-                
-            }
+                    }
+                         else {
+                                  if ((tuboArrastrado.x>((tuboAgarre.x)+(tuboAgarre.width)-3)) && ((tuboArrastrado.x+tuboArrastrado.width) <= ((tuboAgarre.x+tuboAgarre.width)+(tuboArrastrado.width+4))) && ((tuboArrastrado.y>=(tuboAgarre.y-3)) && (tuboArrastrado.y <= (tuboAgarre.y+tuboAgarre.height+3))))
+                                     {
+                                            tuboArrastrado.x=tuboAgarre.x+tuboAgarre.width;
+                                            tuboArrastrado.y=tuboAgarre.y+tuboAgarre.height/2-8;
+                                            tuboArrastrado.inputEnabled=false;
+                                            tuboArrastrado.input.enableDrag(false);
+                                            tubosIn.push(tuboArrastrado);
+
+                                   }
+                                         else {
+
+                                                if ((tuboArrastrado.x+tuboArrastrado.width) < (tuboAgarre.x+8) && ((tuboArrastrado.x) >= ((tuboArrastrado.x-8))) && (tuboArrastrado.y>=(tuboAgarre.y-3)) && (tuboArrastrado.y <= (tuboAgarre.y+tuboAgarre.height+6)))
+                                                    {
+                                                            tuboArrastrado.x=tuboAgarre.x - tuboArrastrado.width;
+                                                            tuboArrastrado.y=tuboAgarre.y+tuboAgarre.height/2-8;
+                                                            tuboArrastrado.inputEnabled=false;
+                                                            tuboArrastrado.input.enableDrag(false);
+                                                            tubosIn.push(tuboArrastrado);
+
+                                                 }
+
+                                         }
+                                    }
+                        }      
     },
 
 
 
     update: function(){
-    // centro de poder del juego
 
-        
+         // centro de poder del juego
+
+               
+    
         if (this.tuboArrastrado()!=null){
-            console.log("ENTRÉ WEON");
+        
             this.VerificarUnion(this.tuboArrastrado());
         }
        
