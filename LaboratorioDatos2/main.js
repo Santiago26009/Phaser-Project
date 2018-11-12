@@ -1,6 +1,9 @@
 var juego = new Phaser.Game(920, 530, Phaser.CANVAS, 'game');
 var cont=0;
 var time;
+
+
+
 var estadoInicial = {
 
 	preload: function () {
@@ -26,6 +29,8 @@ var estadoInicial = {
 	}
 
 };
+
+
 
 var estadoDos = {
 
@@ -61,7 +66,10 @@ var estadoDos = {
     codo2 = juego.add.tileSprite(795, 180, 38, 34, 'codo2');
     codo3 = juego.add.tileSprite(865, 180, 34, 38, 'codo3');
     codo4 = juego.add.tileSprite(820, 250, 38, 34, 'codo4');
-	TEnable();
+    tubos = [tubo1, tubo2, codo1, codo2, codo3, codo4];
+    tubosIn=[];
+	this.TEnable();
+    sw=true;
     timer = juego.add.text(105, 45, juego.time.now);
     },
 
@@ -75,11 +83,103 @@ var estadoDos = {
         juego.state.start('estadoTres');
     },
 
+ tuboArrastrado: function(){
+    for (var i=0; i<tubos.length; i++){
+        if ((juego.input.mousePointer.x>=tubos[i]) && (juego.input.mousePointer.x<=tubos[i]+tubos[i].width) && (juego.input.mousePointer.y>=tubos[i]) && (juego.input.mousePointer.y<=tubos[i]+tubos[i].height)) 
+        {
+            return tubos[i];
+        }
+
+    }
+            return null;
+},
+
+
+     TNoEnable:function(){
+         ///// DESHABILITAR EL ENABLE DE TODOS LOS TUBOS CUANDO PASE EL TIEMPO 
+            tubo1.inputEnabled=false;
+            tubo1.input.enableDrag(false);
+            tubo2.inputEnabled=false;
+            tubo2.input.enableDrag(false);
+            codo1.inputEnabled=false;
+            codo1.input.enableDrag(false);
+            codo2.inputEnabled=false;
+            codo2.input.enableDrag(false);
+            codo3.inputEnabled=false;
+            codo3.input.enableDrag(false);
+            codo4.inputEnabled=false;
+            codo4.input.enableDrag(false);
+          
+        
+    },
+   TEnable: function(){
+   // tubo1.inputEnabled=true;
+        ///// HABILITAR EL ENABLE DE TODOS LOS TUBOS AL CREARLOS         
+           for (i=0; i<tubos.length; i++){
+
+             tubo1.inputEnabled=true;
+            tubo1.input.enableDrag(true);
+            tubo2.inputEnabled=true;
+            tubo2.input.enableDrag(true);
+            codo1.inputEnabled=true;
+            codo1.input.enableDrag(true);
+            codo2.inputEnabled=true;
+            codo2.input.enableDrag(true);
+            codo3.inputEnabled=true;
+            codo3.input.enableDrag(true);
+            codo4.inputEnabled=true;
+            codo4.input.enableDrag(true);
+           }
+            
+   },
+
+    
+     VerificarUnion:function(tuboArrastrado){
+        
+    ///// FALTA MODIFICACI0ÓN: CODIGO DE PRUEBA Y GUIA; VERIFICAR SI HAY CERCANIA CON ALGUNO DE LOS TUBOS QUE SE ENCUENTRA EN USO
+        
+        var tuboAgarre;
+        if (cont==0){
+          tuboAgarre=salida;
+            if ((tuboArrastrado.x>((tuboAgarre.x)+(width/3))) && ((tuboArrastrado.x+tuboArrastrado.width) < (tuboAgarre.x+tuboAgarre.width-(tuboAgarre.width/5))) && ((tuboArrastrado.y>=(tuboAgarre.y+tuboAgarre.height-5)) && (tuboArrastrado.y <= tuboArrastrado.y+tuboAgarre.height+10)))
+                {
+                tuboArrastrado.x=tuboAgarre.x;
+                tuboArrastrado.y=tuboAgarre.y+tuboAgarre.height;
+                tuboArrastrado.inputEnabled=false;
+                tuboArrastrado.input.enableDrag(false);
+                tubosIn.push(tuboArrastrado);
+                cont++;
+                }     
+                else {
+                tuboAgarre=tubosIn[tubosIn.lenght-1];
+                    if ((tuboArrastrado.x>=(tuboAgarre.x) && ((tuboArrastrado.x+tuboArrastrado.width) <= (tuboAgarre.x+tuboAgarre.width))) && ((tuboArrastrado.y>=(tuboAgarre.y+tuboAgarre.height)) && (tuboArrastrado.y <= tuboAgarre.y+tuboAgarre.height)))
+                        {
+                        tuboArrastrado.x=tuboAgarre.x;
+                        tuboArrastrado.y=tuboAgarre.y+tuboAgarre.height;
+                        tuboArrastrado.inputEnabled=false;
+                        tuboArrastrado.input.enableDrag(false);
+                        tubosIn.push(tuboArrastrado);
+                    }   
+                }
+            
+                
+                
+            }
+    },
+
+
+
     update: function(){
 	// centro de poder del juego
-       //console.log (tuboArrastrado()); 
-        VerificarUnion(tubo1, salida);
-        console.log(time);
+
+        
+        if (this.tuboArrastrado()!=null){
+            console.log("ENTRÉ WEON");
+            this.VerificarUnion(this.tuboArrastrado());
+        }
+       
+       
+    
         if ((juego.time.now-time+1)<30007){
             timer.text = (juego.time.now-time)/1000; 
         }
@@ -87,6 +187,8 @@ var estadoDos = {
     },
 
 };
+
+
 
 //var EstadoTres = {
     //console.log(Estado tres);
@@ -99,62 +201,11 @@ var estadoDos = {
    // }
 //}
 
-//function tuboArrastrado(){
-//console.log(juego.input.mousePointer.position.x); 
-//for (tubos: Tubos tubo){
-//if ((juego.input.mousePointer.x>=codo.x) && (juego.input.mousePointer.x<=codo.x+34) && (juego.input.mousePointer.y>=codo.y) && (juego.input.mousePointer.y<=codo.y+38)) 
- //{
-
- //return codo;
- //}
-
-//}
- 
-//}
-    
-    function VerificarUnion(tuboArrastrado,tubo2){
-        
-    ///// FALTA MODIFICACI0ÓN: CODIGO DE PRUEBA Y GUIA; VERIFICAR SI HAY CERCANIA CON ALGUNO DE LOS TUBOS QUE SE ENCUENTRA EN USO
-        if (cont==0){
-            tubo2=salida;
-            if ((tuboArrastrado.x>=(tubo2.x) && (tuboArrastrado.x+90 <=(tubo2.x+100))) && ((tuboArrastrado.y>=(tubo2.y+80)) && (tuboArrastrado.y <= tubo2.y+117))){
-                tuboArrastrado.x=tubo2.x;
-                tuboArrastrado.y=tubo2.y+107;
-                TNoEnable();
-                }       
-            
-            }
-            else {
-                
-                
-                
-            }
-    }
 
 
-    function TNoEnable(){
-         ///// DESHABILITAR EL ENABLE DE TODOS LOS TUBOS CUANDO PASE EL TIEMPO 
-        
-         tubo.inputEnabled=false;
-         tubo.input.enableDrag(false);
-        
-    }
-  function TEnable(){
-        ///// HABILITAR EL ENABLE DE TODOS LOS TUBOS AL CREARLOS
-        tubo1.inputEnabled=true;
-        tubo1.input.enableDrag(true);
-        tubo2.inputEnabled=true;
-        tubo2.input.enableDrag(true);
-        codo1.inputEnabled=true;
-        codo1.input.enableDrag(true);
-        codo2.inputEnabled=true;
-        codo2.input.enableDrag(true);
-        codo3.inputEnabled=true;
-        codo3.input.enableDrag(true);
-        codo4.inputEnabled=true;
-        codo4.input.enableDrag(true);
-    
-   }
+
+
+
 
 
 
