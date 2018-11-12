@@ -150,7 +150,7 @@ var estadoDos = {
         }    
             else {
                 tuboAgarre=tubosIn[tubosIn.length-1];
-                    if ((tuboArrastrado.x+4 >= (tuboAgarre.x)) && ((tuboArrastrado.x + tuboArrastrado.width-5) <= (tuboAgarre.x+tuboAgarre.width)) && (tuboArrastrado.y>=(tuboAgarre.y+tuboAgarre.height-3)) && (tuboArrastrado.y <= (tuboAgarre.y+tuboAgarre.height+tuboArrastrado.width + 3)))
+                    if ((tuboArrastrado.x+6 >= (tuboAgarre.x)) && ((tuboArrastrado.x + tuboArrastrado.width-7) <= (tuboAgarre.x+tuboAgarre.width)) && (tuboArrastrado.y>=(tuboAgarre.y+tuboAgarre.height-4)) && (tuboArrastrado.y <= (tuboAgarre.y+tuboAgarre.height+tuboArrastrado.width + 4)))
                         {
                         tuboArrastrado.x=tuboAgarre.x + 1.5;
                         tuboArrastrado.y=tuboAgarre.y+tuboAgarre.height;
