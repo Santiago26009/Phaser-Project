@@ -22,7 +22,7 @@ var estadoInicial = {
         juego.state.start('estadoDos');
     // centro de poder del juego    
     }
-
+hols
 };
 
 var estadoDos = {
@@ -40,7 +40,12 @@ var estadoDos = {
     juego.load.image('codo2', 'imagenes/codo2.png');
     juego.load.image('codo3', 'imagenes/codo3.png');
     juego.load.image('codo4', 'imagenes/codo4.png');
-
+    juego.load.image('agualarga','imagenes/tres.png');
+    juego.load.image('agualarga2','imagenes/tresacostao.png');
+    juego.load.image('aguacodo1','imagenes/awacm.png');
+    juego.load.image('aguacodo2','imagenes/awac2.png');
+    juego.load.image('aguacodo3','imagenes/awac3.png');
+    juego.load.image('aguacodo4','imagenes/awac4.png');
     },
 
     create: function () {
@@ -66,8 +71,7 @@ var estadoDos = {
     llegada = juego.add.tileSprite(x2, 431, 106, 98, 'llegada');
     timer = juego.add.text(105, 45, juego.time.now);
     tubos = [tubo1, tubo2, codo1, codo2, codo3, codo4];
-    tubosIn=[tubo1];
-    tubosEnable = [false, false, false, false, false, false];
+    tubosIn=[];
     cont=0;
     this.TEnable();
     },
@@ -81,78 +85,10 @@ var estadoDos = {
         for (var i=0; i<tubos.length; i++){
             if ((juego.input.mousePointer.x>=tubos[i].x) && (juego.input.mousePointer.x<=tubos[i].x+tubos[i].width) && (juego.input.mousePointer.y>=tubos[i].y) && (juego.input.mousePointer.y<=tubos[i].y+tubos[i].height)) 
             {
-                this.TubosEnableU(i);
                 return tubos[i];
             }
         }
         return null
-    },
-
-    TubosEnableU: function(i){
-        if (i==0){
-            tubosEnable[0]=true;
-            tubosEnable[1]=false;
-            tubosEnable[2]=true;
-            tubosEnable[3]=false;
-            tubosEnable[4]=true;
-            tubosEnable[5]=true;
-
-        }
-        if (i==1){
-
-            tubosEnable[0]=false;
-            tubosEnable[1]=true;
-            tubosEnable[2]=true;
-            tubosEnable[3]=true;
-            tubosEnable[4]=true;
-            tubosEnable[5]=false;
-
-        }
-
-         if (i==2){
-
-            tubosEnable[0]=true;
-            tubosEnable[1]=false;
-            tubosEnable[2]=false;
-            tubosEnable[3]=true;
-            tubosEnable[4]=true;
-            tubosEnable[5]=false;
-
-        }
-
-
-        if (i==3){
-
-            tubosEnable[0]=false;
-            tubosEnable[1]=true;
-            tubosEnable[2]=false;
-            tubosEnable[3]=false;
-            tubosEnable[4]=false;
-            tubosEnable[5]=true;
-
-        }
-
-        if (i==4){
-
-            tubosEnable[0]=true;
-            tubosEnable[1]=true;
-            tubosEnable[2]=true;
-            tubosEnable[3]=false;
-            tubosEnable[4]=false;
-            tubosEnable[5]=false;
-
-        }
-        if (i==5){
-
-            tubosEnable[0]=true;
-            tubosEnable[1]=false;
-            tubosEnable[2]=false;
-            tubosEnable[3]=true;
-            tubosEnable[4]=true;
-            tubosEnable[5]=false;
-
-        }
-
     },
 
     TNoEnable:function(){
@@ -223,23 +159,9 @@ var estadoDos = {
         tubos.push(codo4);
     },
     
-    ObtenerT: function(tubosIn){
-        for (var i =  0; i < tubos.length; i++) {
-            if (tubosIn[tubosIn.length-1].key==tubos[i].key){
-                return i;
-
-            }
-        }
-
-    },
-
     VerificarUnion:function(tuboArrastrado){       
     ///// FALTA MODIFICACIÓN: CODIGO DE PRUEBA Y GUIA; VERIFICAR SI HAY CERCANIA CON ALGUNO DE LOS TUBOS QUE SE ENCUENTRA EN USO
         var tuboAgarre;
-        if (this.game.input.mousePointer.isDown){
-
-            
-       
         if (cont==0){
           tuboAgarre=salida;
             if ((tuboArrastrado.x>((tuboAgarre.x)+(tuboAgarre.width)-5)) && ((tuboArrastrado.x+tuboArrastrado.width) <= ((tuboAgarre.x+tuboAgarre.width)+(tuboArrastrado.width+12))) && ((tuboArrastrado.y>=(tuboAgarre.y+tuboAgarre.height*2/5 +5)) && (tuboArrastrado.y <= (tuboAgarre.y+tuboAgarre.height+5))))
@@ -250,12 +172,12 @@ var estadoDos = {
                 tuboArrastrado.input.enableDrag(false);
                 tubosIn.push(tuboArrastrado);
                 tubos.push(tuboArrastrado);
+                console.log(tubosIn);
                 cont++;
             } 
         }else {
-            var i= this.ObtenerT(tubosIn);
             tuboAgarre=tubosIn[tubosIn.length-1];
-            if ((tuboArrastrado.x-8 <= (tuboAgarre.x)) && ((tuboArrastrado.x + tuboArrastrado.width+8) >= (tuboAgarre.x+tuboAgarre.width)) && (tuboArrastrado.y+5>=(tuboAgarre.y+tuboAgarre.height-3)) && (tuboArrastrado.y <= (tuboAgarre.y+tuboAgarre.height+tuboArrastrado.width + 5)) && tubosEnable[i])
+            if ((tuboArrastrado.x+6 >= (tuboAgarre.x)) && ((tuboArrastrado.x + tuboArrastrado.width-7) <= (tuboAgarre.x+tuboAgarre.width)) && (tuboArrastrado.y>=(tuboAgarre.y+tuboAgarre.height-4)) && (tuboArrastrado.y <= (tuboAgarre.y+tuboAgarre.height+tuboArrastrado.width + 4)))
                 {
                 tuboArrastrado.x=tuboAgarre.x + 1.5;
                 tuboArrastrado.y=tuboAgarre.y+tuboAgarre.height;
@@ -263,11 +185,7 @@ var estadoDos = {
                 tuboArrastrado.input.enableDrag(false);
                 tubosIn.push(tuboArrastrado);
                 }else {
-
-       
-                    
-
-                    if ((tuboArrastrado.x+5>((tuboAgarre.x)+(tuboAgarre.width)-3)) && ((tuboArrastrado.x+tuboArrastrado.width) <= ((tuboArrastrado.x)+(tuboArrastrado.width+8))) && (tuboArrastrado.y<=(tuboAgarre.y+tuboAgarre.y/2+3)) && (tuboArrastrado.y+tuboArrastrado.height >= (tuboAgarre.y+tuboAgarre.height-3))&& tubosEnable[i])
+                    if ((tuboArrastrado.x>((tuboAgarre.x)+(tuboAgarre.width)-3)) && ((tuboArrastrado.x+tuboArrastrado.width) <= ((tuboAgarre.x+tuboAgarre.width)+(tuboArrastrado.width+4))) && ((tuboArrastrado.y>=(tuboAgarre.y-3)) && (tuboArrastrado.y <= (tuboAgarre.y+tuboAgarre.height+3))))
                         {
                         tuboArrastrado.x=tuboAgarre.x+tuboAgarre.width;
                         tuboArrastrado.y=tuboAgarre.y+tuboAgarre.height/2-8;
@@ -275,7 +193,7 @@ var estadoDos = {
                         tuboArrastrado.input.enableDrag(false);
                         tubosIn.push(tuboArrastrado);
                     }else {
-                        if ((tuboArrastrado.x+tuboArrastrado.width-5) < (tuboAgarre.x+5) && ((tuboArrastrado.x) >= ((tuboArrastrado.x-8))) && (tuboArrastrado.y-4<=(tuboAgarre.y)) && (tuboArrastrado.y >= (tuboAgarre.y+tuboAgarre.height))&& tubosEnable[i])
+                        if ((tuboArrastrado.x+tuboArrastrado.width) < (tuboAgarre.x+8) && ((tuboArrastrado.x) >= ((tuboArrastrado.x-8))) && (tuboArrastrado.y>=(tuboAgarre.y-3)) && (tuboArrastrado.y <= (tuboAgarre.y+tuboAgarre.height+6)))
                             {
                             tuboArrastrado.x=tuboAgarre.x - tuboArrastrado.width;
                             tuboArrastrado.y=tuboAgarre.y+tuboAgarre.height/2-8;
@@ -285,11 +203,44 @@ var estadoDos = {
                         }
                     }
                 }
-            }  }     
+            }      
         },
-
+flujoAgua: function(tubosIn){
+for (var i = 0 ; i <= tubosIn.length ; i++) {
+    if (tubosIn[i]== tubo1) {
+      agualarga =  juego.add.tileSprite(tubosIn[i].x+8,tubosIn[i].y,5,75,'agualarga'); 
+    }else{
+        if (tubosIn[i]== tubo2) {
+            agualarga2 = juego.add.tileSprite(tubosIn[i].x+8,tubosIn[i].y,5,75,'agualarga');
+        }else{
+        if (tubosIn[i]== codo1) {
+            awacm = juego.add.tileSprite(tubosIn[i].x+8,tubosIn[i].y,30,34,'awacm');
+    }else{
+        if (tubosIn[i]== codo2) {
+            awac2 = juego.add.tileSprite(tubosIn[i].x+8,tubosIn[i].y,30,34,'awac2');
+    }else{
+        if (tubosIn[i]== codo3) {
+            awac3 = juego.add.tileSprite(tubosIn[i].x+8,tubosIn[i].y,30,34,'awac3');
+    }else{
+        if (tubosIn[i]== codo4) {
+            awac4 = juego.add.tileSprite(tubosIn[i].x+8,tubosIn[i].y,30,34,'awac4');
+    }
+}
+}
+}
+}    
+}
+this.wait(5000);
+}
+},
+ wait: function(ms){
+   var start = new Date().getTime();
+   var end = start;
+   while(end < start + ms) {
+     end = new Date().getTime();
+  }
+},
     update: function(){
-        
         if (this.tuboArrastrado()!=null){
             this.VerificarUnion(this.tuboArrastrado());
         }
